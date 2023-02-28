@@ -1,10 +1,11 @@
 {
-  types,
+  paisanoTypes,
   grow,
   pick,
   winnow,
   harvest,
-}: {
+}:
+{
   inputs,
   config,
   options,
@@ -63,11 +64,14 @@
       ;
   };
 
+  BlockTypes = paisanoTypes.BlockTypes "flakeModule";
+
   cellBlocksType = mkOptionType {
     name = "cellBlocks";
     description = "list of cell block";
     descriptionClass = "noun";
-    inherit (types.BlockTypes) check;
+    # Per types.nix warning, do deep checking in `merge`, not `check`
+    merge = loc: defs: BlockTypes (lib.mergeDefaultOption loc defs);
   };
 
   opt = options.std;
